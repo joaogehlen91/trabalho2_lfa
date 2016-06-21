@@ -18,9 +18,8 @@ estados_e_firsts = {}
 #prepara dicionario
 for regra in GLC:
 	for estado in regra[0:1]:
-		estados_e_firsts.update({estado: ''})    
+		estados_e_firsts.update({estado: ''})
 
-#preparando dicionario
 
 def firsts_indiretos(producao, i=0, j=3):
 	producao_original = producao
@@ -51,8 +50,6 @@ def first(producao, i=0, j=3):
 
 
 def segundo_passo(estado, producao_origem):
-	#sem_epslon = [x for x in estados_e_firsts[estado_origem] if x != '&']
-	#estados_e_firsts[estado] = estados_e_firsts[estado] + sem_epslon
 	sem_epslon = [x for x in firsts_indiretos(producao_origem) if x != '&']
 	estados_e_firsts[estado] = estados_e_firsts[estado] + sem_epslon
 
@@ -73,32 +70,18 @@ def execute():
 				#segundo_passo(regra[0], producao[0:3])
 				segundo_passo(regra[0], producao)
 
-	print("Segundo passo:")
-	for i in estados_e_firsts:
-		print(i), set(estados_e_firsts[i])
-	print("")
-
 	#terceiro passo do first
 	for regra in GLC:
 		for producao in regra[1:]:
 			if producao[0] == '<':
 				terceiro_passo(regra[0], producao)
-
-	print("Terceiro passo:")
-	for i in estados_e_firsts:
-		print(i), set(estados_e_firsts[i])
-	print("")
-
     
-"""
+
 def calcula_tamanho():
 	acum = 0
 	for i in estados_e_firsts:
 		acum += len(set(estados_e_firsts[i]))
-
 	return acum
-"""
-
 
 
 #primeiro passo do first, inclui somente os firsts terminais
@@ -109,20 +92,19 @@ for regra in GLC:
 			linha.append(producao[0])
 	estados_e_firsts.update({regra[0]: linha})
 
-print("Primeiro passo:")
-for i in estados_e_firsts:
-	print(i), set(estados_e_firsts[i])
-print("")
-    
 
 # falta ajustar o tamanho, executar ate nao mudar mais o tamanho
+tamanho_ant = 0
 execute()
-execute()
+tamanho = calcula_tamanho()
 
-execute()
-execute()
+while tamanho_ant != tamanho:
+	tamanho_ant = tamanho
+	execute()
+	tamanho = calcula_tamanho()
+	
 
-print("ultimo passo:")
+print("First: ")
 for i in estados_e_firsts:
 	print(i), set(estados_e_firsts[i])
 print("")
