@@ -14,6 +14,7 @@ FIRST = {
 }
 """
 
+"""
 GLC = [
     ['<S>', '<S>yx', '<B>z', '<C><A>w', '<A><B>'],
     ['<A>', 'a<C><B>', '<B>yb', 'b<C>'],
@@ -27,6 +28,7 @@ FIRST = {
 	'<A>': ['a', 'y', 'c', 'b'],
 	'<B>': ['a', 'y', 'c', '&']
 }
+"""
 
 
 estados_e_follows = {}
@@ -64,6 +66,17 @@ def follow_estado(producao, estado, nome):
 	return []
 
 
+def copia_follow(nome_regra, producao):
+	estado = producao[-3:]
+	if estado[-1] == '>':
+		estados_e_follows[estado] += estados_e_follows[nome_regra]
+		if '&' in FIRST[estado]:
+			producao = producao[:-3]
+			copia_follow(nome_regra, producao)
+
+	
+
+
 #primeiro passo do follow, inclui somente os follows terminais
 for estado in estados_e_follows:
 	linha = []
@@ -75,9 +88,10 @@ for estado in estados_e_follows:
 					linha += terminal
 	estados_e_follows[estado] += linha
 
-for i in estados_e_follows:
-	print(i), set(estados_e_follows[i])
+#for i in estados_e_follows:
+#	print(i), set(estados_e_follows[i])
 
+"""
 #segundo passo do follow, pegar os follow do estado que dah nome a regra
 for nome in estados_e_follows:
 	linha = []
@@ -88,6 +102,16 @@ for nome in estados_e_follows:
 				if follow: 
 					linha += follow
 	estados_e_follows[estado] += linha
+"""
+#segundo passo do follow
+for regra in GLC:
+	nome_regra = regra[0]
+	for producao in regra[1:]:
+		if producao[-1] == '>': # se a producao termina com um nao terminal
+			copia_follow(nome_regra, producao)
+			#estados_e_follows[producao[-3:]] += estados_e_follows[nome_regra]
+
+
 
 
 		
