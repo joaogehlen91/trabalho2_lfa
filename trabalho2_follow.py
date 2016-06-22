@@ -30,6 +30,23 @@ FIRST = {
 }
 """
 
+GLC = [
+    ['<S>', 'a<B>', '<C>a', '<A>bc', '<C><A>', '<A><B>c'],
+    ['<A>', 'c<D>', '<B><C>', '<D>b'],
+    ['<B>', 'b<B>', '<C>d', '&'],
+    ['<C>', 'c<B>', 'a<A>', 'ab', '<B>c', '&'],
+    ['<D>', 'c<D>', 'e<D>', 'e']
+]
+
+FIRST = {
+	'<S>': ['a', 'c', 'b', 'e', 'd', '&'],
+	'<A>': ['a', 'c', 'b', 'e', 'd', '&'],
+	'<B>': ['a', 'c', 'b', 'd', '&'],
+	'<C>': ['a', 'c', 'b', 'd', '&'],
+	'<D>': ['c', 'e'],
+}
+
+
 
 estados_e_follows = {}
 
@@ -68,7 +85,7 @@ def follow_estado(producao, estado, nome):
 
 def copia_follow(nome_regra, producao):
 	estado = producao[-3:]
-	if estado[-1] == '>':
+	if estado and estado[-1] == '>':
 		estados_e_follows[estado] += estados_e_follows[nome_regra]
 		if '&' in FIRST[estado]:
 			producao = producao[:-3]
