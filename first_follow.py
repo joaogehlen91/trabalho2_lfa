@@ -49,7 +49,6 @@ def execute_first():
 	for regra in GLC:
 		for producao in regra[1:]:
 			if producao[0] == '<':
-				#segundo_passo(regra[0], producao[0:3])
 				segundo_passo(regra[0], producao)
 
 
@@ -153,7 +152,9 @@ for regra in GLC:
 	for producao in regra[1:]:
 		if producao[-1] == '>': # se a producao termina com um nao terminal
 			copia_follow(nome_regra, producao)
-			
+
+
+''' Organiza conjunto'''			
 for i in estados_e_follows:
 	estados_e_follows[i] = list(set(estados_e_follows[i]))
 
