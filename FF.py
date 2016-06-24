@@ -42,14 +42,14 @@ def terceiro_passo(estado, producao):
 
 
 def execute_first():
-	#segundo passo do first, inclui os firsts indiretos, menos o epslon
+	""" Segundo passo do first, inclui os firsts indiretos, menos o epslon """
 	for regra in GLC:
 		for producao in regra[1:]:
 			if producao[0] == '<':
 				segundo_passo(regra[0], producao)
 
 
-	#terceiro passo do first
+	""" Terceiro passo do first """
 	for regra in GLC:
 		for producao in regra[1:]:
 			if producao[0] == '<':
@@ -89,7 +89,7 @@ def copia_follow(nome_regra, producao):
 
 GLC_Json = json.load(open('GLC.json'))
 
-''' Transforma a entrada em uma lista '''
+""" Transforma a entrada em uma lista """
 for i in GLC_Json:
 	line = []
 	line.append(str(i))
@@ -120,7 +120,7 @@ for regra in GLC:
 	estados_e_firsts.update({regra[0]: linha})
 
 
-''' Repete o segundo e terceiro passo do first ateh que nao tenha mais mudancas '''
+""" Repete o segundo e terceiro passo do first ateh que nao tenha mais mudancas """
 tamanho_ant = 0
 execute_first()
 tamanho = calcula_tamanho()
@@ -130,11 +130,12 @@ while tamanho_ant != tamanho:
 	execute_first()
 	tamanho = calcula_tamanho()
 
-''' Organiza conjunto '''
+""" Organiza conjunto """
 for i in estados_e_firsts:
 	estados_e_firsts[i] = list(set(estados_e_firsts[i]))
 
-''' Mostra o conjunto first pronto '''
+
+""" Mostra o conjunto first pronto """
 print("Conjunto First: ")
 for i in estados_e_firsts:
 	print(i, estados_e_firsts[i])
@@ -143,7 +144,7 @@ print
 
 FIRST = estados_e_firsts
 
-''' Primeiro passo do follow, inclui somente os follows terminais '''
+""" Primeiro passo do follow, inclui somente os follows terminais """
 for estado in estados_e_follows:
 	linha = []
 	for regra in GLC:
@@ -155,7 +156,7 @@ for estado in estados_e_follows:
 	estados_e_follows[estado] += linha
 
 
-''' Segundo passo do follow '''
+""" Segundo passo do follow """
 for regra in GLC:
 	nome_regra = regra[0]
 	for producao in regra[1:]:
@@ -163,7 +164,7 @@ for regra in GLC:
 			copia_follow(nome_regra, producao)
 
 
-''' Organiza conjunto'''			
+""" Organiza conjunto """	
 for i in estados_e_follows:
 	estados_e_follows[i] = list(set(estados_e_follows[i]))
 
