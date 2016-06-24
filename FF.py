@@ -111,7 +111,7 @@ for regra in GLC:
 estados_e_follows['<S>'] += ['$']
 
 
-#primeiro passo do first, inclui somente os firsts terminais
+""" primeiro passo do first, inclui somente os firsts terminais """
 for regra in GLC:
 	linha = []
 	for producao in regra[1:]:
