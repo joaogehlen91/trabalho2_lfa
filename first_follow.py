@@ -1,10 +1,7 @@
-GLC = [
-    ['<S>', 'a<B>', '<C>a', '<A>bc', '<C><A>', '<A><B>c'],
-    ['<A>', 'c<D>', '<B><C>', '<D>b'],
-    ['<B>', 'b<B>', '<C>d', '&'],
-    ['<C>', 'c<B>', 'a<A>', 'ab', '<B>c', '&'],
-    ['<D>', 'c<D>', 'e<D>', 'e']
-]
+import json
+
+GLC = []
+line = []
 
 
 def firsts_indiretos(producao, i=0, j=3):
@@ -89,6 +86,18 @@ def copia_follow(nome_regra, producao):
 			copia_follow(nome_regra, producao)
 
 
+
+GLC_Json = json.load(open('GLC.json'))
+
+''' Transforma a entrada em uma lista '''
+for i in GLC_Json:
+	line = []
+	line.append(str(i))
+	for j in GLC_Json[i]:
+		line.append(str(j))
+	GLC.append(line)
+
+
 """prepara dicionarios"""
 estados_e_firsts = {}
 for regra in GLC:
@@ -128,7 +137,7 @@ for i in estados_e_firsts:
 ''' Mostra o conjunto first pronto '''
 print("Conjunto First: ")
 for i in estados_e_firsts:
-	print(i), estados_e_firsts[i]
+	print(i, estados_e_firsts[i])
 print
 
 
@@ -159,6 +168,6 @@ for i in estados_e_follows:
 	estados_e_follows[i] = list(set(estados_e_follows[i]))
 
 
-print("Conjunto Follow: ")
+print("\nConjunto Follow: ")
 for i in estados_e_follows:
-	print i, estados_e_follows[i]
+	print (i, estados_e_follows[i])
