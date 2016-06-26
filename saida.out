@@ -1,13 +1,14 @@
-Conjunto First: 
-<C> ['c', 'a', '&', 'd', 'b']
-<B> ['b', 'c', '&', 'a', 'd']
-<S> ['b', 'a', 'c', '&', 'e', 'd']
-<A> ['b', 'a', 'c', '&', 'e', 'd']
-<D> ['c', 'e']
+    | F I R S T
+<B> | a,  c,  b,  d,  &, 
+<S> | &,  b,  e,  a,  c,  d, 
+<D> | e,  c, 
+<C> | a,  &,  b,  d,  c, 
+<A> | b,  d,  e,  a,  c,  &, 
 
-Conjunto Follow: 
-<S> ['$']
-<A> ['b', '$', 'a', 'c', 'e', 'd']
-<B> ['$', 'b', 'a', 'c', 'e', 'd']
-<C> ['b', '$', 'a', 'c', 'e', 'd']
-<D> ['b', '$', 'a', 'c', 'e', 'd']
+    | F O L L O W
+<S> | $, 
+<B> | b,  $,  e,  a,  c,  d, 
+<D> | b,  $,  e,  a,  c,  d, 
+<C> | b,  $,  d,  e,  a,  c, 
+<A> | b,  $,  e,  a,  c,  d, 
+

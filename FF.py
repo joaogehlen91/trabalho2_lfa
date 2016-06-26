@@ -86,8 +86,24 @@ def copia_follow(nome_regra, producao):
 			copia_follow(nome_regra, producao)
 
 
+def escreve_saida(FF, file_saida, name_set):
+	file_saida.write('    | ')
+	file_saida.write(name_set)
+	file_saida.write('\n')
+	for i in FF:
+		file_saida.write(i)
+		file_saida.write(' |')
+		for j in FF[i]:
+			file_saida.write(' ')
+			file_saida.write(j)
+			file_saida.write(', ')
+		file_saida.write('\n')
+	file_saida.write('\n')
+
 
 GLC_Json = json.load(open('GLC.json'))
+file_saida = open('saida.out', 'w')
+
 
 """ Transforma a entrada em uma lista """
 for i in GLC_Json:
@@ -136,6 +152,8 @@ for i in estados_e_firsts:
 
 
 """ Mostra o conjunto first pronto """
+
+escreve_saida(estados_e_firsts, file_saida, 'F I R S T')
 print("Conjunto First: ")
 for i in estados_e_firsts:
 	print(i, estados_e_firsts[i])
@@ -172,3 +190,5 @@ for i in estados_e_follows:
 print("\nConjunto Follow: ")
 for i in estados_e_follows:
 	print (i, estados_e_follows[i])
+
+escreve_saida(estados_e_follows, file_saida, 'F O L L O W')
