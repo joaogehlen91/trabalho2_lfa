@@ -14,7 +14,6 @@ def firsts_indiretos(producao, i=0, j=3):
 			return estados_e_firsts[estado] + firsts_indiretos(producao_original[i:])
 	return []
 
-
 def first(producao, i=0, j=3):
 	estado = producao[i:j]
 	if estado == '':
@@ -28,18 +27,15 @@ def first(producao, i=0, j=3):
 	else:
 		return estados_e_firsts[estado]
 
-
 def segundo_passo(estado, producao_origem):
 	sem_epslon = [x for x in firsts_indiretos(producao_origem) if x != '&']
 	estados_e_firsts[estado] = estados_e_firsts[estado] + sem_epslon
-
 
 def terceiro_passo(estado, producao):
 	retorno = first(producao)
 	if not retorno:
 		retorno = ['&']
 	estados_e_firsts[estado] = estados_e_firsts[estado] + retorno
-
 
 def execute_first():
 	""" Segundo passo do first, inclui os firsts indiretos, menos o epslon """
@@ -55,13 +51,18 @@ def execute_first():
 			if producao[0] == '<':
 				terceiro_passo(regra[0], producao)
 
+def execute_follow():
+	for regra in GLC:
+		nome_regra = regra[0]
+		for producao in regra[1:]:
+			if producao[-1] == '>': # se a producao termina com um nao terminal
+				copia_follow(nome_regra, producao)
 
-def calcula_tamanho():
+def calcula_tamanho(conjunto):
 	acum = 0
-	for i in estados_e_firsts:
-		acum += len(set(estados_e_firsts[i]))
+	for i in conjunto:
+		acum += len(set(conjunto[i]))
 	return acum
-
 
 def follow_terminal(producao, estado):
 	i = producao.find(estado)
@@ -76,15 +77,13 @@ def follow_terminal(producao, estado):
 	else:
 		return terminal
 
-
 def copia_follow(nome_regra, producao):
-	estado = producao[-3:]
+	estado = producao[-3:] # os tres ultimos
 	if estado and estado[-1] == '>':
 		estados_e_follows[estado] += estados_e_follows[nome_regra]
 		if '&' in FIRST[estado]:
-			producao = producao[:-3]
+			producao = producao[:-3]  # do inicio, menos os 3 ultimos
 			copia_follow(nome_regra, producao)
-
 
 def escreve_saida(FF, file_saida, name_set):
 	file_saida.write('    | ')
@@ -139,26 +138,24 @@ for regra in GLC:
 """ Repete o segundo e terceiro passo do first ateh que nao tenha mais mudancas """
 tamanho_ant = 0
 execute_first()
-tamanho = calcula_tamanho()
+tamanho = calcula_tamanho(estados_e_firsts)
 
 while tamanho_ant != tamanho:
 	tamanho_ant = tamanho
 	execute_first()
-	tamanho = calcula_tamanho()
+	tamanho = calcula_tamanho(estados_e_firsts)
+
 
 """ Organiza conjunto """
 for i in estados_e_firsts:
 	estados_e_firsts[i] = list(set(estados_e_firsts[i]))
 
-
 """ Mostra o conjunto first pronto """
-
 escreve_saida(estados_e_firsts, file_saida, 'F I R S T')
 print("Conjunto First: ")
 for i in estados_e_firsts:
 	print(i, estados_e_firsts[i])
 print
-
 
 FIRST = estados_e_firsts
 
@@ -173,13 +170,15 @@ for estado in estados_e_follows:
 					linha += terminal
 	estados_e_follows[estado] += linha
 
+tamanho_ant = 0
+execute_follow()
+tamanho = calcula_tamanho(estados_e_follows)
 
-""" Segundo passo do follow """
-for regra in GLC:
-	nome_regra = regra[0]
-	for producao in regra[1:]:
-		if producao[-1] == '>': # se a producao termina com um nao terminal
-			copia_follow(nome_regra, producao)
+""" Segundo passo do follow, executa ateh nao tiver mudanca mais """
+while tamanho_ant != tamanho:
+	tamanho_ant = tamanho
+	execute_follow()
+	tamanho = calcula_tamanho(estados_e_follows)
 
 
 """ Organiza conjunto """	
