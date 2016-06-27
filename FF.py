@@ -1,4 +1,5 @@
 import json
+from collections import OrderedDict as Od
 
 GLC = []
 line = []
@@ -148,7 +149,7 @@ while tamanho_ant != tamanho:
 
 """ Organiza conjunto """
 for i in estados_e_firsts:
-	estados_e_firsts[i] = list(set(estados_e_firsts[i]))
+	estados_e_firsts[i] = sorted(set(estados_e_firsts[i]))
 
 """ Mostra o conjunto first pronto """
 escreve_saida(estados_e_firsts, file_saida, 'F I R S T')
@@ -183,7 +184,7 @@ while tamanho_ant != tamanho:
 
 """ Organiza conjunto """	
 for i in estados_e_follows:
-	estados_e_follows[i] = list(set(estados_e_follows[i]))
+	estados_e_follows[i] = sorted(set(estados_e_follows[i]))
 
 
 print("\nConjunto Follow: ")
