@@ -1,5 +1,4 @@
 import json
-from collections import OrderedDict as Od
 
 GLC = []
 line = []
@@ -51,6 +50,7 @@ def execute_first():
 		for producao in regra[1:]:
 			if producao[0] == '<':
 				terceiro_passo(regra[0], producao)
+
 
 def execute_follow():
 	for regra in GLC:
@@ -136,6 +136,22 @@ for regra in GLC:
 	estados_e_firsts.update({regra[0]: linha})
 
 
+print("Primeiro passo do First: Selecionar somente os simbolos")
+print("terminais mais a esquerda de cada produção.\n")
+print("Conjunto First apos a execucao do primeiro passo:")
+for i in estados_e_firsts: #Organiza conjunto
+	estados_e_firsts[i] = sorted(set(estados_e_firsts[i]))
+for i in estados_e_firsts: #printa o conjunto
+	print(i, estados_e_firsts[i])
+print
+
+
+print("\nSegundo passo do First: Selecionar os simbolos nao terminais")
+print("mais a esquerda de cada produção, e entao buscar o first")
+print("desse nao terminal, menos o epslon.")
+print("No terceiro passo verifica se esse first deste estado tem epslon,")
+print("Se caso tiver, pega o simbolo mais seguinte da esqueda para a direita.\n")
+
 """ Repete o segundo e terceiro passo do first ateh que nao tenha mais mudancas """
 tamanho_ant = 0
 execute_first()
@@ -147,16 +163,16 @@ while tamanho_ant != tamanho:
 	tamanho = calcula_tamanho(estados_e_firsts)
 
 
-""" Organiza conjunto """
-for i in estados_e_firsts:
+for i in estados_e_firsts: #Organiza conjunto
 	estados_e_firsts[i] = sorted(set(estados_e_firsts[i]))
 
-""" Mostra o conjunto first pronto """
-escreve_saida(estados_e_firsts, file_saida, 'F I R S T')
-print("Conjunto First: ")
+print("Conjunto First, apos a execucao de todos os passos: ")
 for i in estados_e_firsts:
 	print(i, estados_e_firsts[i])
 print
+escreve_saida(estados_e_firsts, file_saida, 'F I R S T')
+
+print("\n------------------------------------------------------------------------")
 
 FIRST = estados_e_firsts
 
@@ -171,6 +187,15 @@ for estado in estados_e_follows:
 					linha += terminal
 	estados_e_follows[estado] += linha
 
+
+for i in estados_e_follows: #Organiza conjunto
+	estados_e_follows[i] = sorted(set(estados_e_follows[i]))
+print("\nPrimero passo do follow: Seleciona os simbolos terminais logo a direita, e os ")
+print("firsts dos nao terminais, de cada producao.")
+print("\nConjunto Follow, apos a execucao do primeiro passo: ")
+for i in estados_e_follows: # Printa o conjunto
+	print (i, estados_e_follows[i])	
+
 tamanho_ant = 0
 execute_follow()
 tamanho = calcula_tamanho(estados_e_follows)
@@ -182,13 +207,12 @@ while tamanho_ant != tamanho:
 	tamanho = calcula_tamanho(estados_e_follows)
 
 
-""" Organiza conjunto """	
-for i in estados_e_follows:
+for i in estados_e_follows: #Organiza conjunto
 	estados_e_follows[i] = sorted(set(estados_e_follows[i]))
-
-
-print("\nConjunto Follow: ")
+print("\nSegundo passo do follow: seleciona as producoes que terminam com nao terminal, ")
+print("entao esse nao terminal recebe o follow do estado que dah nome a regra.")
+print("Repete este procedimento ateh nao exsistir mais mudancas nos conjuntos.")
+print("\nConjunto Follow, apos a execucao de todos os passos: ") # printa conjunto
 for i in estados_e_follows:
 	print (i, estados_e_follows[i])
-
 escreve_saida(estados_e_follows, file_saida, 'F O L L O W')

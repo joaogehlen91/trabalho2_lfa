@@ -1,12 +1,12 @@
     | F I R S T
-<C> | &,  a,  b,  c,  w,  y,  z, 
+<B> | &,  a,  c,  y, 
 <A> | a,  b,  c,  y, 
 <S> | a,  b,  c,  w,  y,  z, 
-<B> | &,  a,  c,  y, 
+<C> | &,  a,  b,  c,  w,  y,  z, 
 
     | F O L L O W
-<C> | $,  a,  b,  c,  d,  w,  y, 
+<B> | $,  a,  c,  d,  w,  y,  z, 
 <A> | $,  a,  c,  d,  w,  y, 
 <S> | $,  y, 
-<B> | $,  a,  c,  d,  w,  y,  z, 
+<C> | $,  a,  b,  c,  d,  w,  y, 
 
